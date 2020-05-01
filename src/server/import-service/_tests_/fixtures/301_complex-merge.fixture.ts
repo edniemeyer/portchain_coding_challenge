@@ -104,10 +104,6 @@ const importedVesselSchedule: ImportedVesselSchedule = {
 };
 
 const expectedMergeActions: MergeAction[] = [{
-    action: MergeActionType.DELETE,
-    storedPortCall: storedVesselSchedule.portCalls[1],
-    importedPortCall: null
-  }, {
     action: MergeActionType.UPDATE,
     storedPortCall: storedVesselSchedule.portCalls[2],
     importedPortCall: importedVesselSchedule.portCalls[0]
@@ -115,14 +111,18 @@ const expectedMergeActions: MergeAction[] = [{
     action: MergeActionType.UPDATE,
     storedPortCall: storedVesselSchedule.portCalls[3],
     importedPortCall: importedVesselSchedule.portCalls[1]
+  },  {
+    action: MergeActionType.UPDATE,
+    storedPortCall: storedVesselSchedule.portCalls[6],
+    importedPortCall: importedVesselSchedule.portCalls[3]
+  }, {
+    action: MergeActionType.DELETE,
+    storedPortCall: storedVesselSchedule.portCalls[1],
+    importedPortCall: null
   }, {
     action: MergeActionType.DELETE,
     storedPortCall: storedVesselSchedule.portCalls[5],
     importedPortCall: null
-  }, {
-    action: MergeActionType.UPDATE,
-    storedPortCall: storedVesselSchedule.portCalls[6],
-    importedPortCall: importedVesselSchedule.portCalls[3]
   }, {
     action: MergeActionType.DELETE,
     storedPortCall: storedVesselSchedule.portCalls[7],

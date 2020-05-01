@@ -5,7 +5,7 @@ import { PORTCHAIN_MERGER_REFERENCE_IMPLEMENTATION_API_URL } from '../../conf'
 import { response } from 'express'
 
 
-const referenceActionToLocalActionEnum = (referenceAction:string) => {
+export const referenceActionToLocalActionEnum = (referenceAction:string) => {
   if(referenceAction === 'update') {
     return MergeActionType.UPDATE
   } else if(referenceAction === 'insert') {
