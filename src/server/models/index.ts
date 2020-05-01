@@ -2,6 +2,7 @@
 import { Sequelize } from 'sequelize-typescript';
 import Vessel from './vessel';
 import PortCall from './port-call';
+import PortCallHistory from './port-call-history';
 import { DATABASE_URL, IS_PRODUCTION } from '../conf';
 
 const orm = new Sequelize(DATABASE_URL, {
@@ -13,6 +14,6 @@ const orm = new Sequelize(DATABASE_URL, {
   }
 });
 
-orm.addModels([Vessel, PortCall]);
+orm.addModels([Vessel, PortCall, PortCallHistory]);
 
-export {Vessel, PortCall}
+export {Vessel, PortCall, PortCallHistory}
