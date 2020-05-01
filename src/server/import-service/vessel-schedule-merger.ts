@@ -36,7 +36,7 @@ export const mergeVesselSchedules = async (importedVesselSchedule: ImportedVesse
           name: pc.portName
         }
       }
-    }).filter((pc: any) => moment(pc.arrival).isAfter(cursor.clone().subtract(5, 'days'))) // arrivals before that threshold won't be imported anymore from the API
+    }).filter((pc: any) => moment(pc.arrival).isAfter(cursor.clone().subtract(6, 'days'))) // arrivals before that threshold won't be imported anymore from the API
 
     payload.newPortCalls = importedVesselSchedule.portCalls.map(pc => {
       return {
