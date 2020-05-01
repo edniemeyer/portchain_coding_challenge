@@ -33,7 +33,7 @@ app.get('/api/vessel-schedule/:vesselImo', async (req, res) => {
 })
 
 app.get('/api/port-call-history/:portCallId', async (req, res) => {
-  const portCallHistory = await PortCallHistory.findAll({where: {port_call_id: req.params.portCallId}})
+  const portCallHistory = await PortCallHistory.findAll({where: {port_call_id: req.params.portCallId}, order: ['logDate']})
   res.send(portCallHistory || [])
 })
 
