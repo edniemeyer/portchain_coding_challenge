@@ -16,7 +16,6 @@ const fixtures = loadAllFixtures()
  *   - DELETE: removes a port call from the database
  */
 export const mergeVesselSchedules = async (importedVesselSchedule: ImportedVesselSchedule, storedVesselSchedule: StoredVesselSchedule): Promise<MergeAction[]> => {
-  // TODO: reimplement this function to merge vessel schedules
   if (referenceImplementation.isConfigured) {
     // This is calling Portchain's reference implementation of the merging algorithm.
     // It is only for Portchain's internal use and not available to candidates.

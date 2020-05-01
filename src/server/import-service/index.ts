@@ -1,5 +1,5 @@
 import { fetchAvailableVessels, fetchFullVesselSchedule } from "../provider-api"
-import { Vessel, PortCall } from "../models"
+import { Vessel, PortCall, PortCallHistory } from "../models"
 import { Moment }  from 'moment'
 import { mergeVesselSchedules } from "./vessel-schedule-merger"
 import { MergeActionType, MergeAction } from "./data-types"
@@ -46,19 +46,19 @@ const importFullVesselSchedule = async (vessel:Vessel) => {
     for(const mergeAction of mergeActions) {
       switch(mergeAction.action) {
         case MergeActionType.INSERT:
-          await PortCall.create({...mergeAction.importedPortCall, vessel_imo: vessel.imo})
-          // TODO: record port call history in DB: create action with original eta/etd and 'cursor value' as the log date
+          const portCall = await PortCall.create({...mergeAction.importedPortCall, vessel_imo: vessel.imo})
+          await PortCallHistory.create({...mergeAction.importedPortCall, port_call_id: portCall.id, vessel_imo: vessel.imo, logDate: cursor, isInsert: true})
           break;
         case MergeActionType.DELETE:
           await PortCall.update({isDeleted: true}, {where: {id: mergeAction.storedPortCall.id}})
-          // TODO: record port call history in DB: update action with deletion and 'cursor value' as the log date
+          await PortCallHistory.create({...mergeAction.storedPortCall, port_call_id: mergeAction.storedPortCall.id, vessel_imo: vessel.imo, logDate: cursor, isDelete: true})
           break;
         case MergeActionType.UPDATE:
           await PortCall.update({
             arrival: mergeAction.importedPortCall.arrival,
             departure: mergeAction.importedPortCall.departure
           }, {where: {id: mergeAction.storedPortCall.id}})
-          // TODO: record port call history in DB: update action with new arrival/departure values and 'cursor value' as the log date
+          await PortCallHistory.create({...mergeAction.importedPortCall, port_call_id: mergeAction.storedPortCall.id, vessel_imo: vessel.imo, logDate: cursor, isUpdate: true})
           break;
       }
     }

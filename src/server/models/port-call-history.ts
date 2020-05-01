@@ -1,4 +1,4 @@
-import {Table, Column, Model, DataType, AutoIncrement, CreatedAt, PrimaryKey, BelongsTo} from 'sequelize-typescript';
+import {Table, Column, Model, DataType, AutoIncrement, CreatedAt, UpdatedAt, PrimaryKey, BelongsTo} from 'sequelize-typescript';
 import { Moment } from 'moment';
 import Vessel from './vessel';
 import { PortCall } from '.';
@@ -39,9 +39,16 @@ export default class PortCallHistory extends Model<PortCallHistory> {
   @Column(DataType.DATE)
   createdDate: Moment;
 
+  @UpdatedAt
+  @Column(DataType.DATE)
+  updatedDate: Moment;
+
   @Column(DataType.DATE)
   logDate: Moment;
 
   @BelongsTo(() => Vessel, 'vessel_imo')
   vessel: Vessel;
+
+  @BelongsTo(() => PortCall, 'port_call_id')
+  portCall: PortCall;
 }
