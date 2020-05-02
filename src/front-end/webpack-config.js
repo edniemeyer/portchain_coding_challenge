@@ -32,7 +32,11 @@ module.exports = {
             configFile: "./tsconfig.json"
           }
         }
-      }
+      },
+      {
+        test: /\.css$/i,
+        use: ['style-loader', 'css-loader'],
+      },
     ]
   },
   plugins: [

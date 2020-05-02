@@ -6,6 +6,7 @@ import { Router, Link } from "@reach/router"
 import {VesselList} from './components/VesselList'
 import {VesselSchedule} from './components/VesselSchedule'
 import {PortCallHistory} from './components/PortCallHistory'
+require('./styles.css');
 
 export const App  = () => {
   return (

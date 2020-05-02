@@ -55,12 +55,12 @@ export class VesselList extends React.Component<any, State>  {
 
   render() {
     return (
-      <div>
+      <div style={{textAlign: 'left'}}>
         <h1>Vessels</h1>
-        <button onClick={() => this.importAll()}>Run the full import</button>
+        <h1><button onClick={() => this.importAll()}>Run the full import</button></h1>
         {this.state.import && this.state.import.status === 'ok' && <p>Import has started</p>}
         {this.state.import && this.state.import.status !== 'ok' && <p>{this.state.import.message}</p>}
-        <ul>
+        <ul style={{display: 'inline-block'}}>
           {this.state.vessels.map(v => <li key={v.imo}>
             <Link to={`/vessel-schedule/${v.imo}`}
               state={{

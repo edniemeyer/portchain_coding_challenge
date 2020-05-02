@@ -45,14 +45,27 @@ export class PortCallHistory extends React.Component<any, State>  {
     return (
       <div>
         <h1>Port call history for port call {this.props.location.state.portId} in port,
-        {this.props.location.state.arrival}/{this.props.location.state.departure}, vessel {this.props.location.state.vesselName}</h1>
-        <ul>{this.state.portCallHistory.map(pch =>
-          <li key={pch.id}>
-            [cursor: {pch.logDate}] {pch.portName} ({pch.portId}): [arrival: {pch.arrival}, departure: {pch.departure}]
-              {pch.isInsert ? " - INSERT" : ""}
-            {pch.isUpdate ? " - UPDATE" : ""}
-            {pch.isDelete ? " - DELETE" : ""}
-          </li>)}</ul>
+         {this.props.location.state.arrival}/{this.props.location.state.departure},
+         vessel {this.props.location.state.vesselName}</h1>
+        <table className="table-fill"><tr>
+          <th>Cursor</th>
+          <th>Port</th>
+          <th>Arrival</th>
+          <th>Departure</th>
+          <th>Status</th>
+        </tr>
+          {this.state.portCallHistory.map(pch =>
+            <tr key={pch.id}>
+              <td>{pch.logDate}</td>
+              <td>{pch.portName} ({pch.portId})</td>
+              <td>{pch.arrival}</td>
+              <td>{pch.departure}</td>
+              <td>{pch.isInsert ? "INSERT" : ""}
+                {pch.isUpdate ? "UPDATE" : ""}
+                {pch.isDelete ? "DELETE" : ""}
+              </td>
+            </tr>)}
+        </table>
       </div>
     );
   }

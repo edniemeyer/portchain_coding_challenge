@@ -45,20 +45,31 @@ export class VesselSchedule extends React.Component<any, State>  {
     return (
       <div>
         <h1>Vessel Schedule for -{this.props.location.state.vesselName}- (-{this.props.location.state.vesselImo}-)</h1>
-        <ul>{this.state.vesselSchedule.map(vs =>
-          <li key={vs.id}>
-            <Link to={`/port-call-history/${vs.id}`}
-            state={{
-              vesselName: this.props.location.state.vesselName,
-              arrival: vs.arrival,
-              departure: vs.departure,
-              portId: vs.portId
-            }}>
-              {vs.portName} ({vs.portId}):
-            </Link>
-            [arrival: {vs.arrival}, departure: {vs.departure}] {vs.isDeleted ? " - DELETED" : ""}
-          </li>)}
-        </ul>
+        <table className="table-fill">
+          <tr>
+            <th>Port</th>
+            <th>Arrival</th>
+            <th>Departure</th>
+            <th>Deleted</th>
+          </tr>
+          {this.state.vesselSchedule.map(vs =>
+            <tr key={vs.id}>
+              <td>
+                <Link to={`/port-call-history/${vs.id}`}
+                  state={{
+                    vesselName: this.props.location.state.vesselName,
+                    arrival: vs.arrival,
+                    departure: vs.departure,
+                    portId: vs.portId
+                  }}>
+                  {vs.portName} ({vs.portId})
+              </Link>
+              </td>
+              <td>{vs.arrival}</td>
+              <td>{vs.departure}</td>
+              <td>{vs.isDeleted ? "Yes" : "No"}</td>
+            </tr>)}
+        </table>
       </div>
     );
   }
