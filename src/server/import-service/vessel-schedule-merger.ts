@@ -109,7 +109,6 @@ const merger = (payload: any, cursor: moment.Moment): any[] => {
     })
     return responseData;
   } else if (payload.newPortCalls.length === 0) { // if no new data from the API, delete all stored portCalls from threshold
-    console.log("deleting all stored data")
     payload.existingPortCalls.forEach((existingPortCall: any) => {
       responseData.push({
         action: "delete",
