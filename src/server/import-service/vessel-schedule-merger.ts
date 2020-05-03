@@ -99,16 +99,21 @@ export const mergeVesselSchedules = async (importedVesselSchedule: ImportedVesse
 
 const merger = (payload: any, cursor: moment.Moment): any[] => {
   let responseData: any[] = [];
-  // if no new data from the API, return empty
-  if (payload.newPortCalls.length === 0) {
-    return responseData;
-  }
   //no data in database
   if (payload.existingPortCalls.length === 0) {
     payload.newPortCalls.forEach((newPortCall: any) => {
       responseData.push({
         action: "insert",
         newPortCall
+      })
+    })
+    return responseData;
+  } else if (payload.newPortCalls.length === 0) { // if no new data from the API, delete all stored portCalls from threshold
+    console.log("deleting all stored data")
+    payload.existingPortCalls.forEach((existingPortCall: any) => {
+      responseData.push({
+        action: "delete",
+        existingPortCall
       })
     })
   } else {
@@ -162,15 +167,17 @@ const merger = (payload: any, cursor: moment.Moment): any[] => {
   - Its ETD is after MIN(cursor, api.firstPortCall.ETA)
   - The port call from the DB cannot be resolved to any port call from the API
   */
-  payload.existingPortCalls.forEach((existingPortCall: any) => {
+  if (payload.newPortCalls.length !== 0) {
+    payload.existingPortCalls.forEach((existingPortCall: any) => {
 
-    if (moment(existingPortCall.departure).isAfter(moment.min(moment(payload.newPortCalls[0].arrival), cursor))) {
-      responseData.push({
-        action: "delete",
-        existingPortCall
-      })
-    }
-  })
+      if (moment(existingPortCall.departure).isAfter(moment.min(moment(payload.newPortCalls[0].arrival), cursor))) {
+        responseData.push({
+          action: "delete",
+          existingPortCall
+        })
+      }
+    })
+  }
 
 
   return responseData
