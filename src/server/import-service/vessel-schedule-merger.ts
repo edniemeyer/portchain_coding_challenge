@@ -2,11 +2,11 @@ import {
   ImportedVesselSchedule, StoredVesselSchedule, MergeAction, MergeActionType,
 } from './data-types';
 
-import moment = require('moment')
+import moment = require('moment-timezone')
 import { loadAllFixtures } from './_tests_/fixtures';
 import * as referenceImplementation from './reference-implementation'
 
-
+moment.tz.setDefault("UTC");
 const fixtures = loadAllFixtures()
 /**
  * Outputs a list of actions based on 2 inputs: (1) a new vessel schedule and (2) an existing vessel schedule.
@@ -108,12 +108,14 @@ const merger = (payload: any, cursor: moment.Moment): any[] => {
       })
     })
     return responseData;
-  } else if (payload.newPortCalls.length === 0) { // if no new data from the API, delete all stored portCalls from threshold
+  } else if (payload.newPortCalls.length === 0) { // if no new data from the API, delete all stored portCalls from cursor on
     payload.existingPortCalls.forEach((existingPortCall: any) => {
-      responseData.push({
-        action: "delete",
-        existingPortCall
-      })
+      if (moment(existingPortCall.arrival).isSameOrAfter(cursor)) {
+        responseData.push({
+          action: "delete",
+          existingPortCall
+        })
+      }
     })
   } else {
     payload.newPortCalls.forEach((newPortCall: any) => {
@@ -169,7 +171,7 @@ const merger = (payload: any, cursor: moment.Moment): any[] => {
   if (payload.newPortCalls.length !== 0) {
     payload.existingPortCalls.forEach((existingPortCall: any) => {
 
-      if (moment(existingPortCall.departure).isAfter(moment.min(moment(payload.newPortCalls[0].arrival), cursor))) {
+      if (moment(existingPortCall.departure).isSameOrAfter(moment.min(moment(payload.newPortCalls[0].arrival), cursor))) {
         responseData.push({
           action: "delete",
           existingPortCall
