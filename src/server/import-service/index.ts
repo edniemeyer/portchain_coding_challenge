@@ -51,7 +51,8 @@ const importFullVesselSchedule = async (vessel:Vessel) => {
           break;
         case MergeActionType.DELETE:
           await PortCall.update({isDeleted: true}, {where: {id: mergeAction.storedPortCall.id}})
-          await PortCallHistory.create({...mergeAction.storedPortCall, port_call_id: mergeAction.storedPortCall.id, vessel_imo: vessel.imo, logDate: cursor, isDelete: true})
+          const {id, ...storedPortCallNoId} = mergeAction.storedPortCall
+          await PortCallHistory.create({ ...storedPortCallNoId, port_call_id: mergeAction.storedPortCall.id, vessel_imo: vessel.imo, logDate: cursor, isDelete: true})
           break;
         case MergeActionType.UPDATE:
           await PortCall.update({
